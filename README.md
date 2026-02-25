@@ -1,4 +1,6 @@
-# my-personal-finance
+# my-minimal-finance
+
+![App Screenshot](static/screenshot.png)
 
 A sleek, intuitive, and privacy-focused personal finance tracker built with SvelteKit. Monitor your expenses, track your income, manage monthly budgets, and visualize your financial health—all entirely in your browser using local storage (IndexedDB).
 
@@ -27,8 +29,8 @@ You will need Node.js installed on your system.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/my-personal-finance.git
-   cd my-personal-finance
+   git clone https://github.com/RussellJapheth/my-minimal-finance.git
+   cd my-minimal-finance
    ```
 
 2. Install the dependencies:
@@ -56,4 +58,4 @@ You can preview the production build with `npm run preview`.
 
 ## Privacy
 
-`my-personal-finance` is designed with absolute privacy in mind. Because it uses IndexedDB, your financial data never leaves your browser. There are no tracking scripts or external database calls transmitting your personal information.
+`my-minimal-finance` is designed with absolute privacy in mind. Because it uses IndexedDB, your financial data never leaves your browser. There are no tracking scripts or external database calls transmitting your personal information.
