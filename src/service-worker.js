@@ -1,6 +1,6 @@
 import { build, files, version } from "$service-worker";
 
-const CACHE = `finance-cache-${version}`;
+const CACHE = `my-finance-cache-${version}`;
 
 const ASSETS = ["/", ...build, ...files];
 
