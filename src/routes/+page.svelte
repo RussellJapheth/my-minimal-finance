@@ -49,26 +49,48 @@
         </div>
 
         <div class="flex gap-4">
-            <div class="flex-1 bg-neutral-800 rounded-2xl p-4 shadow-inner">
+            <a
+                href="/insights?type=income"
+                class="flex-1 bg-neutral-800 rounded-2xl p-4 shadow-inner active:bg-neutral-700 transition-colors block text-left"
+            >
                 <div
-                    class="text-xs text-neutral-400 mb-1 font-medium tracking-wide uppercase"
+                    class="text-xs text-neutral-400 mb-1 font-medium tracking-wide uppercase flex justify-between items-center"
                 >
                     Income
+                    <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
+                    >
                 </div>
                 <div class="text-lg font-semibold text-emerald-400">
                     {formatCurrency(financeStore.totalIncomeMonth)}
                 </div>
-            </div>
-            <div class="flex-1 bg-neutral-800 rounded-2xl p-4 shadow-inner">
+            </a>
+            <a
+                href="/insights?type=expense"
+                class="flex-1 bg-neutral-800 rounded-2xl p-4 shadow-inner active:bg-neutral-700 transition-colors block text-left"
+            >
                 <div
-                    class="text-xs text-neutral-400 mb-1 font-medium tracking-wide uppercase"
+                    class="text-xs text-neutral-400 mb-1 font-medium tracking-wide uppercase flex justify-between items-center"
                 >
                     Expense
+                    <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"><path d="m9 18 6-6-6-6" /></svg
+                    >
                 </div>
                 <div class="text-lg font-semibold text-rose-400">
                     {formatCurrency(financeStore.totalExpenseMonth)}
                 </div>
-            </div>
+            </a>
         </div>
     </header>
 

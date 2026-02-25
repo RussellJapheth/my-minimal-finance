@@ -6,19 +6,41 @@
 
     let { onClose, initialTransaction = null } = $props();
 
-    const init = initialTransaction || {};
+    function getInit() {
+        return initialTransaction || {};
+    }
 
-    let type = $state(init.type || "expense");
-    let amount = $state(init.amount ? String(init.amount) : "");
-    let categoryId = $state(init.categoryId || "");
-    let note = $state(init.note || "");
+    let type = $state(getInit().type || "expense");
+    let amount = $state(getInit().amount ? String(getInit().amount) : "");
+    let categoryId = $state(getInit().categoryId || "");
+    let note = $state(getInit().note || "");
     let date = $state(
-        init.date
-            ? init.date.split("T")[0]
+        getInit().date
+            ? getInit().date.split("T")[0]
             : new Date().toISOString().split("T")[0],
     );
 
     let amountInput;
+
+    let displayAmount = $state(
+        getInit().amount
+            ? new Intl.NumberFormat("en-US").format(getInit().amount)
+            : "",
+    );
+
+    function handleAmountInput(e) {
+        // Remove non-digit characters
+        let rawValue = e.target.value.replace(/\D/g, "");
+        if (rawValue === "") {
+            amount = "";
+            displayAmount = "";
+            return;
+        }
+
+        amount = rawValue;
+        // Format with commas
+        displayAmount = new Intl.NumberFormat("en-US").format(Number(rawValue));
+    }
 
     // Smart default category
     $effect(() => {
@@ -102,10 +124,8 @@
             </h2>
             <button
                 class="w-8 h-8 flex items-center justify-center text-neutral-400 bg-neutral-100 rounded-full hover:bg-neutral-200"
-                onclick={onClose}
+                onclick={onClose}>✕</button
             >
-                ✕
-            </button>
         </div>
 
         <!-- Body -->
@@ -117,19 +137,15 @@
                     'expense'
                         ? 'bg-white text-neutral-900 shadow-sm'
                         : 'text-neutral-500'}"
-                    onclick={() => (type = "expense")}
+                    onclick={() => (type = "expense")}>Expense</button
                 >
-                    Expense
-                </button>
                 <button
                     class="flex-1 py-3 text-sm font-semibold rounded-xl transition-colors {type ===
                     'income'
                         ? 'bg-white text-neutral-900 shadow-sm'
                         : 'text-neutral-500'}"
-                    onclick={() => (type = "income")}
+                    onclick={() => (type = "income")}>Income</button
                 >
-                    Income
-                </button>
             </div>
 
             <!-- Amount -->
@@ -146,10 +162,11 @@
                     >
                     <input
                         bind:this={amountInput}
-                        type="number"
+                        type="text"
                         inputmode="numeric"
                         id="amount"
-                        bind:value={amount}
+                        value={displayAmount}
+                        oninput={handleAmountInput}
                         placeholder="0"
                         class="w-full bg-neutral-50 border-0 rounded-2xl py-4 pl-12 pr-4 text-3xl font-bold text-neutral-900 focus:ring-2 focus:ring-neutral-900 focus:bg-white transition-all outline-none"
                     />
