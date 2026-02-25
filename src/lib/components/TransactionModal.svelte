@@ -227,12 +227,19 @@
         <div class="p-6 pt-2 pb-8 sm:pb-6 flex gap-3">
             {#if initialTransaction}
                 <button
-                    onclick={async () => {
+                    type="button"
+                    onclick={async (e) => {
+                        e.preventDefault();
                         if (confirm("Delete this transaction?")) {
-                            await financeStore.removeTransaction(
-                                initialTransaction.id,
-                            );
-                            onClose();
+                            try {
+                                await financeStore.removeTransaction(
+                                    initialTransaction.id,
+                                );
+                                onClose();
+                            } catch (err) {
+                                console.error("Deletion failed", err);
+                                alert("Failed to delete transaction.");
+                            }
                         }
                     }}
                     class="w-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center shrink-0 hover:bg-rose-200 transition-colors"
@@ -257,7 +264,11 @@
                 </button>
             {/if}
             <button
-                onclick={handleSave}
+                type="button"
+                onclick={(e) => {
+                    e.preventDefault();
+                    handleSave();
+                }}
                 disabled={!amount || isNaN(amount) || amount <= 0}
                 class="flex-1 bg-neutral-900 text-white font-bold text-lg py-5 rounded-2xl shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 disabled:active:scale-100"
             >
