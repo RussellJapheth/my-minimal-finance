@@ -38,8 +38,8 @@
         }
 
         amount = rawValue;
-        // Format with commas
-        displayAmount = new Intl.NumberFormat("en-US").format(Number(rawValue));
+        // Format with commas manually or with locale formatter
+        displayAmount = Number(rawValue).toLocaleString("en-US");
     }
 
     // Smart default category

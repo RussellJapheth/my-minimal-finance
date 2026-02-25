@@ -12,7 +12,28 @@
 
     let name = $state(getInit().name || "");
     let type = $state(getInit().type || "expense");
-    let isDefault = initialCategory ? initialCategory.isDefault : false;
+    let isDefault = $derived(
+        initialCategory ? initialCategory.isDefault : false,
+    );
+
+    let budget = $state(getInit().budget ? String(getInit().budget) : "");
+
+    let displayBudget = $state(
+        getInit().budget
+            ? Number(getInit().budget).toLocaleString("en-US")
+            : "",
+    );
+
+    function handleBudgetInput(e) {
+        let rawValue = e.target.value.replace(/\D/g, "");
+        if (rawValue === "") {
+            budget = "";
+            displayBudget = "";
+            return;
+        }
+        budget = rawValue;
+        displayBudget = Number(rawValue).toLocaleString("en-US");
+    }
 
     let nameInput;
 
@@ -28,6 +49,10 @@
             name: name.trim(),
             type,
             isDefault,
+            budget:
+                (type === "expense" || type === "both") && budget
+                    ? Number(budget)
+                    : null,
             createdAt: initialCategory
                 ? initialCategory.createdAt
                 : new Date().toISOString(),
@@ -126,6 +151,29 @@
                     class="w-full bg-neutral-50 border-0 rounded-2xl p-4 text-xl font-bold text-neutral-900 focus:ring-2 focus:ring-neutral-900 focus:bg-white transition-all outline-none"
                 />
             </div>
+
+            <!-- Budget -->
+            {#if type === "expense" || type === "both"}
+                <div class="space-y-2 transition-all">
+                    <label
+                        for="budget"
+                        class="block text-sm font-medium text-neutral-500"
+                        >Monthly Budget (₦) <span
+                            class="text-xs text-neutral-400 font-normal"
+                            >(Optional)</span
+                        ></label
+                    >
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        id="budget"
+                        value={displayBudget}
+                        oninput={handleBudgetInput}
+                        placeholder="e.g. 50,000"
+                        class="w-full bg-neutral-50 border-0 rounded-2xl p-4 text-xl font-bold text-neutral-900 focus:ring-2 focus:ring-neutral-900 focus:bg-white transition-all outline-none"
+                    />
+                </div>
+            {/if}
         </div>
 
         <!-- Footer -->

@@ -1,5 +1,6 @@
 <script>
     import { financeStore } from "$lib/stores/finance.svelte";
+    import { formatCurrency } from "$lib/utils";
     import CategoryModal from "$lib/components/CategoryModal.svelte";
 
     let showModal = $state(false);
@@ -97,8 +98,17 @@
                                 class="w-full text-left bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-between active:scale-[0.98] transition-transform"
                                 onclick={() => openEditModal(c)}
                             >
-                                <div class="font-semibold text-neutral-900">
-                                    {c.name}
+                                <div>
+                                    <div class="font-semibold text-neutral-900">
+                                        {c.name}
+                                    </div>
+                                    {#if c.type === "expense" && c.budget}
+                                        <div
+                                            class="text-xs text-neutral-500 font-medium"
+                                        >
+                                            Budget: {formatCurrency(c.budget)}
+                                        </div>
+                                    {/if}
                                 </div>
                                 <div
                                     class="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400"

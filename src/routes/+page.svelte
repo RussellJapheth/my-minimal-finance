@@ -4,12 +4,23 @@
     import TransactionModal from "$lib/components/TransactionModal.svelte";
 
     let showAddModal = $state(false);
+    let selectedTransaction = $state(null);
 
     let recentTransactions = $derived(financeStore.transactions.slice(0, 10));
 
     function getCategoryName(id) {
         const cat = financeStore.categories.find((c) => c.id === id);
         return cat ? cat.name : "Unknown";
+    }
+
+    function openEditModal(t) {
+        selectedTransaction = t;
+        showAddModal = true;
+    }
+
+    function handleCloseModal() {
+        showAddModal = false;
+        selectedTransaction = null;
     }
 </script>
 
@@ -92,6 +103,31 @@
                 </div>
             </a>
         </div>
+
+        <a
+            href="/budgets"
+            class="mt-4 bg-neutral-800 rounded-2xl p-4 shadow-inner active:bg-neutral-700 transition-colors flex justify-between items-center text-left w-full group"
+        >
+            <div
+                class="font-medium text-neutral-300 group-hover:text-white transition-colors"
+            >
+                Monthly Budgets
+            </div>
+            <div
+                class="w-8 h-8 rounded-full bg-neutral-700 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-600 transition-colors"
+            >
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg
+                >
+            </div>
+        </a>
     </header>
 
     <!-- Recent Transactions -->
@@ -124,8 +160,9 @@
         {:else}
             <div class="space-y-3">
                 {#each recentTransactions as t (t.id)}
-                    <div
-                        class="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-between active:scale-[0.98] transition-transform"
+                    <button
+                        class="w-full text-left bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-between active:scale-[0.98] transition-all hover:bg-neutral-50"
+                        onclick={() => openEditModal(t)}
                     >
                         <div class="flex items-center gap-4">
                             <div
@@ -159,7 +196,7 @@
                                 t.amount,
                             )}
                         </div>
-                    </div>
+                    </button>
                 {/each}
             </div>
         {/if}
@@ -176,5 +213,8 @@
 </div>
 
 {#if showAddModal}
-    <TransactionModal onClose={() => (showAddModal = false)} />
+    <TransactionModal
+        initialTransaction={selectedTransaction}
+        onClose={handleCloseModal}
+    />
 {/if}

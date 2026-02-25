@@ -3,12 +3,25 @@
 
     let fileInput;
 
-    function exportData() {
-        const data = {
+    function exportData(type = "all") {
+        let exportData = {
             categories: financeStore.categories,
             transactions: financeStore.transactions,
         };
-        const blob = new Blob([JSON.stringify(data, null, 2)], {
+
+        if (type === "categories") {
+            exportData.transactions = [];
+        } else if (type === "income") {
+            exportData.transactions = financeStore.transactions.filter(
+                (t) => t.type === "income",
+            );
+        } else if (type === "expense") {
+            exportData.transactions = financeStore.transactions.filter(
+                (t) => t.type === "expense",
+            );
+        }
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], {
             type: "application/json",
         });
         const url = URL.createObjectURL(blob);
@@ -19,7 +32,10 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        showExportMenu = false;
     }
+
+    let showExportMenu = $state(false);
 
     function handleFileSelect(event) {
         const file = event.target.files[0];
@@ -124,41 +140,81 @@
         <div
             class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden divide-y divide-neutral-100"
         >
-            <button
-                class="w-full flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
-                onclick={exportData}
-            >
-                <div class="flex items-center gap-4">
-                    <div
-                        class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center"
+            <div class="relative w-full">
+                <button
+                    class="w-full flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
+                    onclick={() => (showExportMenu = !showExportMenu)}
+                >
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center"
+                        >
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                ><path
+                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                                /><polyline points="7 10 12 15 17 10" /><line
+                                    x1="12"
+                                    y1="15"
+                                    x2="12"
+                                    y2="3"
+                                /></svg
+                            >
+                        </div>
+                        <div class="text-left">
+                            <div class="font-medium text-neutral-900">
+                                Export Data
+                            </div>
+                            <div class="text-xs text-neutral-500 mt-0.5">
+                                Download JSON backup
+                            </div>
+                        </div>
+                    </div>
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-neutral-400 transform transition-transform {showExportMenu
+                            ? 'rotate-180'
+                            : ''}"><path d="m6 9 6 6 6-6" /></svg
                     >
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            ><path
-                                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
-                            /><polyline points="7 10 12 15 17 10" /><line
-                                x1="12"
-                                y1="15"
-                                x2="12"
-                                y2="3"
-                            /></svg
+                </button>
+
+                {#if showExportMenu}
+                    <div
+                        class="bg-neutral-50 border-t border-neutral-100 divide-y divide-neutral-100"
+                    >
+                        <button
+                            class="w-full text-left p-4 pl-16 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+                            onclick={() => exportData("all")}
+                            >All Data (Complete Backup)</button
+                        >
+                        <button
+                            class="w-full text-left p-4 pl-16 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+                            onclick={() => exportData("expense")}
+                            >Only Expenses</button
+                        >
+                        <button
+                            class="w-full text-left p-4 pl-16 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+                            onclick={() => exportData("income")}
+                            >Only Income</button
+                        >
+                        <button
+                            class="w-full text-left p-4 pl-16 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+                            onclick={() => exportData("categories")}
+                            >Only Categories & Budgets</button
                         >
                     </div>
-                    <div class="text-left">
-                        <div class="font-medium text-neutral-900">
-                            Export Data
-                        </div>
-                        <div class="text-xs text-neutral-500 mt-0.5">
-                            Download JSON backup
-                        </div>
-                    </div>
-                </div>
-            </button>
+                {/if}
+            </div>
 
             <button
                 class="w-full flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
