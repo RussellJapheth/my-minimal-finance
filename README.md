@@ -1,42 +1,59 @@
-# sv
+# my-personal-finance
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A sleek, intuitive, and privacy-focused personal finance tracker built with SvelteKit. Monitor your expenses, track your income, manage monthly budgets, and visualize your financial health—all entirely in your browser using local storage (IndexedDB).
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Local Storage First:** All transactional data and categories are stored directly on your device using IndexedDB. No server database required.
+- **Budgeting & Categories:** Set monthly budgets for custom expense categories and track your spending against them in real-time.
+- **Dynamic Insights:** Visualize your spending habits with interactive charts and month-over-month summaries.
+- **Streamlined Transactions:** Quickly add, edit, or delete transactions. Recent transactions are editable right from the dashboard.
+- **Data Portability:** Export your complete financial picture, or granular subsets (only expenses, only income, or just categories) to JSON, and import backups whenever needed.
+- **Responsive & Modern UI:** A beautiful, animated, clean interface designed to feel like a premium mobile app.
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Tech Stack
 
-To recreate this project with the same configuration:
+- **Framework:** SvelteKit (Svelte 5 Runes)
+- **Styling:** Tailwind CSS
+- **Database:** IndexedDB (via `idb` wrapper)
+- **Charts:** Chart.js
 
-```sh
-# recreate this project
-npx sv create --template minimal --no-types --no-install .
-```
+## Getting Started
 
-## Developing
+### Prerequisites
+You will need Node.js installed on your system.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Installation
 
-```sh
-npm run dev
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/my-personal-finance.git
+   cd my-personal-finance
+   ```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
-## Building
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-To create a production version of your app:
+4. Open your browser and navigate to `http://localhost:5173`.
 
-```sh
+## Deployment
+
+This app is configured to use `@sveltejs/adapter-netlify` for easy deployment to Netlify Edge.
+To build the app for production:
+
+```bash
 npm run build
 ```
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Privacy
+
+`my-personal-finance` is designed with absolute privacy in mind. Because it uses IndexedDB, your financial data never leaves your browser. There are no tracking scripts or external database calls transmitting your personal information.
