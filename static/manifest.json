@@ -1,0 +1,16 @@
+{
+  "name": "Finance Tracker",
+  "short_name": "Finance",
+  "description": "A simple offline-first personal finance tracker.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
